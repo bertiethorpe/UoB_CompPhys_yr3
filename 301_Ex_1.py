@@ -9,8 +9,8 @@ Created on Fri Jan 21 14:30:04 2022
 #======# Computational Physics 301 21/22 - Exercise 1 - Linear Algebra #======#
 
 # Program to find the tension in three cables suspending a skycam, such as seen
-# in sports stadiums. This is done through solving 3 linear equations as an
-# eigenvalue problem with the scipy linalg.solve family of functions. 
+# in sports stadiums. This is done through solving 3 linear equations with the 
+# scipy linalg.solve family of functions. 
 
 import numpy as np
 import matplotlib.pyplot as plt
