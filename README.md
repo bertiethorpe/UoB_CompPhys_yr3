@@ -51,3 +51,23 @@ In the problems below, you are asked to solve the diffusion equation in the cont
 given by  𝑘=𝜆𝜌𝐶 , where  𝜆  is the thermal conductivity,  𝜌  is the density, and  𝐶  is the specific heat capacity. The questions below concern
 an iron poker of length 50cm. You may take the thermal conductivity of iron to be a constant 59 W/m/K, its specific heat as 450 J/kg/K, and its 
 density as 7,900 kg/m3. You can ignore heat loss along the length of the poker.
+
+# Exercise 4
+
+The program above utilises a number of Monte Carlo systems to simulate a decay experiment. I employed a multilevel inheritance approach given the iterative nature of the experiment; all calculations lead into the subsequent ones, so the class system should reflect that. Should the program not have been relatively small, this approach may have become untenable with many parameters and the possibility of inheritance confusion. As it stands, this method is appropriate.
+
+The inertial to lab frame velocity calculations were derived from Lorentz transformation equations; spherical to cartesian coordinates were calculated to make this more straightforward and to aid in the subsequent 3D and 2D density plots. Dimensional manipulation proved to be the most prevalent aspect of code. Due to the many different sorts of calculations, np.shape() was used extensively to test array sizes and then reshape arrays for purpose. This was especially important for the matrix calculations as the data had to be reformed and zipped correctly. 
+
+The mpl_toolkits.mplot3d package was of great importance for both presenting data and testing the 3d distribution of direction vectors at the decay vertex, particularly for ensuring uniform spherical distribution in the inertial frame. Once transformed to the lab frame, the decay products can be seen to have an increased z velocity. At this point I went back and changed the distribution in the inertial frame to be hemispherical. This was because we are interested in +z velocities, as the tracking stations are at +z coords. In order to save computing power and get data for the most amount of events, this was the natural solution. It also superseded the necessity to remove -z velocity events from calculations involving the track parameters later on.
+
+To solve the matrix equation for track parameter reconstruction, the script.linalg library was utilised. The lstsq() function computes a least squares solution to the matrix equation. It does this by computing a vector such that the norm |b-Mx| is minimised. The routine uses the ‘gelsd’ lapack-driver. 
+ 
+The problem is solved in three steps:
+ (1) Reduce the coefficient matrix M to bidiagonal form with
+     Householder transformations, reducing the original problem
+     into a "bidiagonal least squares problem" (BLS)
+ (2) Solve the BLS using a divide and conquer approach.
+ (3) Apply back all the Householder transformations to solve
+     the original least squares problem.
+
+ The divide and conquer algorithm makes very mild assumptions about floating point arithmetic.
